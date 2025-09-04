@@ -5,7 +5,6 @@
   <title>DeeEncryptor/Decryptor | DeeStudio</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    /* Root Variables */
     :root {
       --bg: #0d1117;
       --text: #f5f5f5;
@@ -14,8 +13,6 @@
       --accent3: #1de9b6;
       --card: #161b22;
     }
-
-    /* Reset */
     body {
       margin: 0;
       font-family: "Segoe UI", Arial, sans-serif;
@@ -24,7 +21,7 @@
       overflow-x: hidden;
     }
 
-    /* Animated Gradient Background */
+    /* Hero Section */
     .hero {
       height: 100vh;
       display: flex;
@@ -35,32 +32,16 @@
       padding: 0 20px;
       background: linear-gradient(-45deg, var(--accent1), var(--accent2), var(--accent3), #ff4081);
       background-size: 400% 400%;
-      animation: gradientBG 10s ease infinite;
+      animation: gradientBG 12s ease infinite;
       position: relative;
       overflow: hidden;
+      color: white;
     }
     @keyframes gradientBG {
       0% { background-position: 0% 50%; }
       50% { background-position: 100% 50%; }
       100% { background-position: 0% 50%; }
     }
-
-    /* Floating shapes */
-    .shape {
-      position: absolute;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.1);
-      animation: float 8s ease-in-out infinite;
-    }
-    .shape:nth-child(1) { width: 100px; height: 100px; top: 10%; left: 15%; animation-duration: 12s; }
-    .shape:nth-child(2) { width: 150px; height: 150px; bottom: 20%; right: 10%; animation-duration: 10s; }
-    .shape:nth-child(3) { width: 80px; height: 80px; bottom: 15%; left: 25%; animation-duration: 14s; }
-    @keyframes float {
-      0%, 100% { transform: translateY(0px); }
-      50% { transform: translateY(-30px); }
-    }
-
-    /* Hero Content */
     .hero h1 {
       font-size: clamp(2rem, 6vw, 4rem);
       margin-bottom: 15px;
@@ -92,7 +73,6 @@
       100% { transform: scale(1); }
     }
 
-    /* Sections */
     section {
       max-width: 1000px;
       margin: 60px auto;
@@ -104,32 +84,11 @@
       margin-bottom: 20px;
       color: var(--accent2);
     }
-    .card {
-      background: var(--card);
-      border-radius: 15px;
-      padding: 20px;
-      margin: 15px;
-      flex: 1;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-    .card:hover {
-      transform: translateY(-10px);
-      box-shadow: 0 10px 20px rgba(0,0,0,0.5);
-    }
-    .card p { color: #ccc; }
-
-    .cards {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-
     ul {
       text-align: left;
       display: inline-block;
       color: #ddd;
     }
-
     footer {
       background: #111;
       padding: 20px;
@@ -146,9 +105,6 @@
 <body>
   <!-- Hero -->
   <div class="hero">
-    <div class="shape"></div>
-    <div class="shape"></div>
-    <div class="shape"></div>
     <h1>🕵️ DeeEncryptor/Decryptor</h1>
     <p>Secure your secrets by transforming messages into encrypted JPEG images. Share safely, decrypt easily.</p>
     <button onclick="location.href='/app';">🚀 Launch Tool</button>
@@ -157,14 +113,11 @@
   <!-- About -->
   <section>
     <h2>🔹 About</h2>
-    <div class="cards">
-      <div class="card">
-        <p>
-          DeeEncryptor/Decryptor by <strong>DeeStudio</strong> transforms your text 
-          into encrypted JPEG images. Easy to share, hard to crack.
-        </p>
-      </div>
-    </div>
+    <p>
+      DeeEncryptor/Decryptor by <strong>DeeStudio</strong> transforms your text 
+      into encrypted JPEG images. Easy to share like any normal photo, but only
+      decryptable with our tool.
+    </p>
   </section>
 
   <!-- How to Use -->
@@ -173,18 +126,18 @@
     <ul>
       <li>Type your secret message in the Encrypt tab.</li>
       <li>Click <strong>Encrypt</strong> → Get an <code>encrypted.jpeg</code>.</li>
-      <li>Share the JPEG like any normal picture.</li>
-      <li>Receiver uploads JPEG → Decrypt → Reads the secret.</li>
+      <li>Share the JPEG like a normal picture.</li>
+      <li>Receiver uploads the JPEG → Decrypt → Reads the secret.</li>
     </ul>
   </section>
 
-  <!-- Encryptor Info -->
+  <!-- Info -->
   <section>
     <h2>🔹 What is an Encryptor/Decryptor?</h2>
     <p>
       An <strong>Encryptor</strong> hides readable text into coded data.  
-      A <strong>Decryptor</strong> brings it back safely.  
-      DeeEncryptor makes this fun by turning your text into images 🖼️!
+      A <strong>Decryptor</strong> brings it back.  
+      DeeEncryptor makes this simple and creative by turning your text into shareable JPEGs.
     </p>
   </section>
 

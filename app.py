@@ -72,10 +72,14 @@ def jpeg_to_audio(jpeg_bytes: bytes) -> bytes:
     arr = np.array(img).flatten()
     return arr.tobytes()
 
-# ---------------- Flask Routes ---------------- #
 @app.route("/")
-def home():
-    return render_template("index.html")
+def landing():
+    return render_template("landing.html")   # Show landing page first
+
+@app.route("/app")
+def tool():
+    return render_template("index.html")     # Tool page
+
 
 @app.route("/encrypt", methods=["POST"])
 def encrypt():
@@ -99,3 +103,4 @@ def decrypt():
 
 if __name__ == "__main__":
     app.run(debug=True)
+

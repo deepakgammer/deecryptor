@@ -2,73 +2,75 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>🕵️ Dee Encryptor/Decryptor</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+  <title>DeeEncryptor/Decryptor | Tool</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     :root {
-      --bg: #111;
-      --text: #eee;
-      --card: #222;
-      --accent: linear-gradient(45deg, #0f62fe, #42a5f5, #1de9b6);
+      --bg: #0d1117;
+      --text: #f5f5f5;
+      --card: #161b22;
+      --accent1: #0f62fe;
+      --accent2: #42a5f5;
+      --accent3: #1de9b6;
     }
     body.light {
       --bg: #f5f5f5;
       --text: #111;
       --card: #fff;
-      --accent: linear-gradient(45deg, #0062ff, #26c6da, #ff4081);
+      --accent1: #0062ff;
+      --accent2: #26c6da;
+      --accent3: #ff4081;
     }
     body {
-      font-family: Arial, sans-serif;
+      margin: 0;
+      font-family: "Segoe UI", Arial, sans-serif;
       background: var(--bg);
       color: var(--text);
-      margin: 0;
-      padding: 0;
+      transition: background 0.5s ease, color 0.5s ease;
+      text-align: center;
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      min-height: 100vh;
-      transition: background 0.5s ease, color 0.5s ease;
-    }
-    h1 {
-      font-size: clamp(1.4rem, 4vw, 2.4rem);
-      margin: 20px 0;
-      text-align: center;
     }
 
-    /* 🌙 Theme Toggle */
+    /* Header */
+    header {
+      padding: 20px;
+      background: var(--card);
+      border-bottom: 1px solid #333;
+      position: relative;
+    }
+    header h1 {
+      margin: 0;
+      font-size: clamp(1.5rem, 5vw, 2.5rem);
+    }
+
+    /* Theme Toggle */
     .theme-toggle {
-      position: fixed;
-      top: 15px;
-      right: 15px;
+      position: absolute;
+      top: 20px;
+      right: 20px;
       background: transparent;
       border: none;
       cursor: pointer;
       font-size: 1.8rem;
+      color: var(--text);
       transition: transform 0.5s ease;
     }
-    .theme-toggle span {
-      display: inline-block;
-      transition: transform 0.5s ease, opacity 0.5s ease;
-    }
-    body.light .moon { opacity: 0; transform: rotate(180deg); }
-    body.light .sun { opacity: 1; transform: rotate(0deg); }
-    .moon { opacity: 1; transform: rotate(0deg); }
-    .sun { opacity: 0; transform: rotate(-180deg); }
+    .theme-toggle:hover { transform: scale(1.2); }
 
-    /* 📂 Tabs */
+    /* Tabs */
     .tabs {
       display: flex;
       justify-content: center;
-      margin-bottom: 20px;
+      margin-top: 20px;
       border-bottom: 2px solid #333;
-      width: 100%;
       max-width: 700px;
-      flex-wrap: wrap;
+      margin-left: auto;
+      margin-right: auto;
     }
     .tab {
       flex: 1;
-      min-width: 120px;
-      text-align: center;
       padding: 12px;
       cursor: pointer;
       font-weight: bold;
@@ -76,63 +78,84 @@
       transition: 0.3s;
     }
     .tab.active {
-      border-color: #42a5f5;
-      color: #42a5f5;
+      border-color: var(--accent2);
+      color: var(--accent2);
     }
     .tab-content {
       display: none;
-      width: 100%;
+      padding: 20px;
       max-width: 700px;
-      text-align: center;
+      margin: auto;
     }
     .tab-content.active { display: block; }
 
-    /* 📝 Inputs */
+    /* Text areas */
     textarea, pre {
       width: 90%;
-      max-width: 650px;
+      max-width: 600px;
       margin: 10px auto;
       border-radius: 10px;
       padding: 12px;
-      font-size: clamp(0.9rem, 2.5vw, 1rem);
+      font-size: 1rem;
       background: var(--card);
       color: var(--text);
       border: 1px solid #444;
-      transition: background 0.5s ease, color 0.5s ease;
       box-sizing: border-box;
     }
-    textarea { height: clamp(100px, 20vh, 150px); resize: vertical; }
+    textarea { height: 120px; resize: vertical; }
 
-    /* 🔘 Buttons */
+    /* Buttons */
     button {
       margin: 12px;
-      padding: clamp(12px, 3vw, 16px) clamp(20px, 5vw, 32px);
-      font-size: clamp(1rem, 2.5vw, 1.1rem);
+      padding: 14px 28px;
+      font-size: 1rem;
       border-radius: 50px;
-      cursor: pointer;
       border: none;
-      background: var(--accent);
-      background-size: 300% 300%;
-      color: #fff;
+      cursor: pointer;
+      background: linear-gradient(45deg, var(--accent1), var(--accent2), var(--accent3));
+      color: white;
       font-weight: bold;
-      letter-spacing: 1px;
-      box-shadow: 0 0 12px rgba(15,98,254,0.5);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      min-width: 150px;
+      box-shadow: 0 0 10px rgba(15,98,254,0.5);
+      transition: transform 0.3s, box-shadow 0.3s;
+      animation: pulse 2s infinite;
     }
-    button:hover { transform: scale(1.05); }
-    input[type=file] { margin: 15px 0; font-size: clamp(0.9rem, 2.5vw, 1rem); }
-    pre { font-size: clamp(0.8rem, 2vw, 1rem); word-wrap: break-word; overflow-x: auto; }
+    button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px rgba(66,165,245,0.8), 0 0 40px rgba(29,233,182,0.6);
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
+    /* File input */
+    input[type=file] {
+      margin: 15px 0;
+      color: var(--text);
+    }
+
+    /* Footer */
+    footer {
+      margin-top: auto;
+      background: var(--card);
+      padding: 15px;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #aaa;
+      border-top: 1px solid #333;
+    }
+    footer a {
+      color: var(--accent2);
+      text-decoration: none;
+    }
   </style>
 </head>
 <body>
-  <!-- 🌙 Dark/Light Toggle -->
-  <button class="theme-toggle" onclick="toggleTheme()">
-    <span class="moon">🌙</span>
-    <span class="sun">☀️</span>
-  </button>
-  
-  <h1>🕵️ Dee Encryptor/Decryptor</h1>
+  <header>
+    <h1>🕵️ DeeEncryptor/Decryptor</h1>
+    <button class="theme-toggle" onclick="toggleTheme()">🌗</button>
+  </header>
 
   <!-- Tabs -->
   <div class="tabs">
@@ -140,14 +163,14 @@
     <div class="tab" onclick="openTab('decrypt')">Decrypt</div>
   </div>
 
-  <!-- Encrypt Tab -->
+  <!-- Encrypt -->
   <div id="encrypt" class="tab-content active">
     <h3>Encrypt Message</h3>
     <textarea id="message" placeholder="Type your secret message..."></textarea><br>
     <button onclick="encrypt()">🔒 Encrypt → JPEG</button>
   </div>
 
-  <!-- Decrypt Tab -->
+  <!-- Decrypt -->
   <div id="decrypt" class="tab-content">
     <h3>Decrypt Message</h3>
     <input type="file" id="fileInput" accept=".jpeg,.jpg"/>
@@ -155,6 +178,11 @@
     <h3>Output</h3>
     <pre id="output">Decrypted message will appear here...</pre>
   </div>
+
+  <footer>
+    <p>© 2025 DeeStudio. All rights reserved. | Built with ❤️ by DeeStudio</p>
+    <p><a href="#">www.deestudio.com</a></p>
+  </footer>
 
   <script>
     // 🌙 Theme Toggle

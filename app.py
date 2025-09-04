@@ -94,11 +94,20 @@ def encrypt():
 def decrypt():
     file = request.files["file"]
     jpeg_bytes = file.read()
+
+    # Step 1: JPEG → raw audio bytes
     audio_bytes = jpeg_to_audio(jpeg_bytes)
-    img = audio_to_image(audio_bytes)
-    undef = image_to_undefined(img)
+
+    # Step 2: raw audio bytes = original PNG bytes
+    img_bytes = audio_bytes
+
+    # Step 3: PNG bytes → Undefined → Text
+    undef = image_to_undefined(img_bytes)
     text = undefined_to_text(undef)
+
     return jsonify({"message": text})
+
 
 if __name__ == "__main__":
     app.run(debug=True)
+

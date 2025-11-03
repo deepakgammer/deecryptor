@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>DeeEncryptor/Decryptor | DeeStudio</title>
+  <title>DeeEncryptor / Decryptor | DeeStudio</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     :root {
@@ -21,7 +21,7 @@
       overflow-x: hidden;
     }
 
-    /* Hero Section */
+    /* 🌈 Hero Section */
     .hero {
       height: 100vh;
       display: flex;
@@ -34,7 +34,6 @@
       background-size: 400% 400%;
       animation: gradientBG 12s ease infinite;
       position: relative;
-      overflow: hidden;
       color: white;
     }
     @keyframes gradientBG {
@@ -45,14 +44,16 @@
     .hero h1 {
       font-size: clamp(2rem, 6vw, 4rem);
       margin-bottom: 15px;
+      letter-spacing: 1px;
     }
     .hero p {
-      font-size: clamp(1rem, 2.5vw, 1.4rem);
+      font-size: clamp(1rem, 2.5vw, 1.3rem);
       max-width: 700px;
       margin-bottom: 30px;
+      opacity: 0.95;
     }
     .hero button {
-      padding: 14px 32px;
+      padding: 14px 34px;
       border: none;
       border-radius: 50px;
       font-size: 1.2rem;
@@ -65,7 +66,7 @@
     }
     .hero button:hover {
       transform: scale(1.1);
-      box-shadow: 0 0 20px rgba(255,255,255,0.7);
+      box-shadow: 0 0 25px rgba(255, 255, 255, 0.8);
     }
     @keyframes pulse {
       0% { transform: scale(1); }
@@ -73,6 +74,7 @@
       100% { transform: scale(1); }
     }
 
+    /* ✨ Sections */
     section {
       max-width: 1000px;
       margin: 60px auto;
@@ -84,66 +86,92 @@
       margin-bottom: 20px;
       color: var(--accent2);
     }
+    section p {
+      color: #ddd;
+      font-size: 1.05rem;
+      line-height: 1.6;
+    }
     ul {
       text-align: left;
       display: inline-block;
-      color: #ddd;
+      color: #ccc;
+      font-size: 1rem;
+      line-height: 1.6;
     }
+
+    /* 🧾 Footer */
     footer {
       background: #111;
       padding: 20px;
       text-align: center;
       font-size: 0.9rem;
       color: #aaa;
+      border-top: 1px solid #222;
     }
     footer a {
       color: var(--accent2);
       text-decoration: none;
+      transition: 0.3s;
+    }
+    footer a:hover {
+      color: var(--accent3);
     }
   </style>
 </head>
 <body>
-  <!-- Hero -->
+
+  <!-- 🕵️ Hero Section -->
   <div class="hero">
-    <h1>🕵️ DeeEncryptor/Decryptor</h1>
-    <p>Secure your secrets by transforming messages into encrypted JPEG images. Share safely, decrypt easily.</p>
+    <h1>🕵️ DeeEncryptor / Decryptor</h1>
+    <p>Encrypt your words into unbreakable digital keys. Share safely, decrypt anytime — built for creators, dreamers, and coders by <strong>DeeStudio</strong>.</p>
     <button onclick="location.href='/app';">🚀 Launch Tool</button>
   </div>
 
-  <!-- About -->
+  <!-- 🔹 About -->
   <section>
     <h2>🔹 About</h2>
     <p>
-      DeeEncryptor/Decryptor by <strong>DeeStudio</strong> transforms your text 
-      into encrypted PNG images. Easy to share like any normal photo, but only
-      decryptable with our tool.
+      <strong>DeeEncryptor / Decryptor</strong> (v3.0) is a stateless encryption engine developed by <strong>DeeStudio</strong>.  
+      It transforms your plain text into secure, encrypted keys using advanced AES-based algorithms.  
+      No data storage, no tracking — only you can decrypt what you encrypt.
     </p>
   </section>
 
-  <!-- How to Use -->
+  <!-- 🔹 How to Use -->
   <section>
     <h2>🔹 How to Use</h2>
     <ul>
-      <li>Type your secret message in the Encrypt tab.</li>
-      <li>Click <strong>Encrypt</strong> → Get an <code>encrypted.png</code>.</li>
-      <li>Share the png like a normal picture.</li>
-      <li>Receiver uploads the png → Decrypt → Reads the secret.</li>
+      <li>Type your message inside the <strong>Encrypt</strong> tab.</li>
+      <li>Click <strong>Encrypt</strong> → You’ll get an <code>encrypted key</code>.</li>
+      <li>Copy and share that key safely.</li>
+      <li>Anyone with the key can <strong>Decrypt</strong> it anytime using this tool.</li>
     </ul>
   </section>
 
-  <!-- Info -->
+  <!-- 🔹 Why It’s Powerful -->
   <section>
-    <h2>🔹 What is an Encryptor/Decryptor?</h2>
+    <h2>🔹 Why It’s Powerful</h2>
     <p>
-      An <strong>Encryptor</strong> hides readable text into coded data.  
-      A <strong>Decryptor</strong> brings it back.  
-      DeeEncryptor makes this simple and creative by turning your text into shareable JPEGs.
+      This new version of DeeEncryptor doesn’t rely on temporary storage or images.  
+      It uses mathematical, stateless encryption — meaning your secret can be decrypted  
+      even years later as long as you still have your encrypted key and DeeStudio’s algorithm key file.
+    </p>
+  </section>
+
+  <!-- 🧠 Behind the Logic -->
+  <section>
+    <h2>🔹 The Logic Behind</h2>
+    <p>
+      DeeEncryptor v3.0 uses the <strong>Fernet cryptography</strong> protocol —  
+      a modern standard built on <em>AES-128 encryption</em> with message integrity verification.  
+      Each encrypted string contains timestamp + data signature, ensuring authenticity and privacy.
     </p>
   </section>
 
   <footer>
     <p>© 2025 DeeStudio. All rights reserved. | Built with ❤️ by DeeStudio</p>
-    <p><a href="https://deestudio.it.com" target="_blank">🌐 deestudio.it.com</a></p>
+    <p><a href="https://www.deestudio.it.com" target="_blank">🌐 deestudio.it.com</a></p>
   </footer>
+
 </body>
 </html>

@@ -1,57 +1,84 @@
-from flask import Flask, request, send_file, jsonify, render_template
-from PIL import Image
-import numpy as np
-import io
+from flask import Flask, request, jsonify, render_template
+from cryptography.fernet import Fernet
+import os
 
 app = Flask(__name__)
 
-# ---------------- Step 1: Text ↔ Bytes ---------------- #
-def text_to_bytes(msg: str) -> bytes:
-    return msg.encode("utf-8")
+# -----------------------------------------------------
+# 1️⃣ Load or create master encryption key
+# -----------------------------------------------------
+KEY_FILE = "deecryptor_master.key"
 
-def bytes_to_text(data: bytes) -> str:
-    return data.decode("utf-8", errors="ignore")
+if not os.path.exists(KEY_FILE):
+    key = Fernet.generate_key()
+    with open(KEY_FILE, "wb") as f:
+        f.write(key)
+else:
+    with open(KEY_FILE, "rb") as f:
+        key = f.read()
 
-# ---------------- Step 2: Bytes ↔ PNG ---------------- #
-def bytes_to_png(data: bytes) -> bytes:
-    arr = np.frombuffer(data, dtype=np.uint8)
-    size = int(len(arr) ** 0.5) + 1
-    img = np.zeros((size, size), dtype=np.uint8)
-    img.flat[:len(arr)] = arr
-    image = Image.fromarray(img, "L")  # grayscale
-    buf = io.BytesIO()
-    image.save(buf, format="PNG")      # lossless
-    return buf.getvalue()
+fernet = Fernet(key)
 
-def png_to_bytes(png_bytes: bytes) -> bytes:
-    img = Image.open(io.BytesIO(png_bytes)).convert("L")
-    arr = np.array(img).flatten()
-    return bytes(arr)
 
-# ---------------- Flask Routes ---------------- #
+# -----------------------------------------------------
+# 2️⃣ Routes
+# -----------------------------------------------------
+
 @app.route("/")
 def landing():
-    return render_template("landing.html")   # Landing page
+    # Optional: you can make a landing.html later
+    return render_template("landing.html")
+
 
 @app.route("/app")
 def tool():
-    return render_template("index.html")     # Tool page
+    # Optional: the main encrypt/decrypt UI page
+    return render_template("index.html")
 
+
+# -----------------------------------------------------
+# 3️⃣ Encrypt Route (Stateless Encryption)
+# -----------------------------------------------------
 @app.route("/encrypt", methods=["POST"])
 def encrypt():
-    msg = request.form["message"]
-    data = text_to_bytes(msg)
-    png = bytes_to_png(data)
-    return send_file(io.BytesIO(png), mimetype="image/png",
-                     as_attachment=True, download_name="encrypted.png")
+    msg = request.form.get("message", "").strip()
+    if not msg:
+        return jsonify({"error": "Message cannot be empty."}), 400
 
+    # Encrypt message using Fernet (AES + HMAC)
+    encrypted = fernet.encrypt(msg.encode()).decode()
+
+    return jsonify({
+        "status": "success",
+        "encrypted_key": encrypted,
+        "tip": "Save this key safely — it’s needed to decrypt later!"
+    })
+
+
+# -----------------------------------------------------
+# 4️⃣ Decrypt Route (Stateless Decryption)
+# -----------------------------------------------------
 @app.route("/decrypt", methods=["POST"])
 def decrypt():
-    file = request.files["file"]
-    png_bytes = file.read()
-    data = png_to_bytes(png_bytes)
-    text = bytes_to_text(data)
-    return jsonify({"message": text})
+    token = request.form.get("key", "").strip()
+    if not token:
+        return jsonify({"error": "Key cannot be empty."}), 400
 
+    try:
+        decrypted = fernet.decrypt(token.encode()).decode()
+        return jsonify({
+            "status": "success",
+            "message": decrypted
+        })
+    except Exception:
+        return jsonify({
+            "status": "error",
+            "error": "Invalid or tampered key. Make sure you’re using the same one returned during encryption."
+        }), 400
+
+
+# -----------------------------------------------------
+# 5️⃣ Run App
+# -----------------------------------------------------
 if __name__ == "__main__":
     app.run(debug=True)

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>🕵️ DeeEncryptor/Decryptor | Tool</title>
+  <title>🕵️ DeeEncryptor / Decryptor | Tool</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     :root {
@@ -28,7 +28,6 @@
       min-height: 100vh;
     }
 
-    /* Header */
     header {
       padding: 20px;
       background: var(--card);
@@ -41,7 +40,6 @@
       font-size: clamp(1.5rem, 5vw, 2.5rem);
     }
 
-    /* Theme Toggle */
     .theme-toggle {
       position: absolute;
       top: 20px;
@@ -55,7 +53,6 @@
     }
     .theme-toggle:hover { transform: rotate(20deg) scale(1.2); }
 
-    /* Tabs */
     .tabs {
       display: flex;
       justify-content: center;
@@ -77,6 +74,7 @@
       border-color: #42a5f5;
       color: #42a5f5;
     }
+
     .tab-content {
       display: none;
       padding: 20px;
@@ -86,8 +84,7 @@
     }
     .tab-content.active { display: block; }
 
-    /* Inputs */
-    textarea, pre {
+    textarea, input, pre {
       width: 90%;
       max-width: 600px;
       margin: 10px auto;
@@ -100,9 +97,8 @@
       box-sizing: border-box;
     }
     textarea { height: 120px; resize: vertical; }
-    pre { word-wrap: break-word; }
+    pre { word-wrap: break-word; white-space: pre-wrap; }
 
-    /* Buttons */
     button {
       margin: 12px;
       padding: 14px 28px;
@@ -128,7 +124,6 @@
       100% { transform: scale(1); }
     }
 
-    /* Footer */
     footer {
       margin-top: auto;
       background: var(--card);
@@ -143,40 +138,44 @@
 </head>
 <body>
   <header>
-    <h1>🕵️ DeeEncryptor/Decryptor</h1>
+    <h1>🕵️ DeeEncryptor / Decryptor</h1>
     <button class="theme-toggle" onclick="toggleTheme()">🌗</button>
   </header>
 
-  <!-- Tabs -->
   <div class="tabs">
     <div class="tab active" onclick="openTab('encrypt')">Encrypt</div>
     <div class="tab" onclick="openTab('decrypt')">Decrypt</div>
   </div>
 
-  <!-- Encrypt -->
+  <!-- 🔒 Encrypt Tab -->
   <div id="encrypt" class="tab-content active">
     <h3>Encrypt Message</h3>
     <textarea id="message" placeholder="Type your secret message..."></textarea><br>
-    <button onclick="encrypt()">🔒 Encrypt → PNG</button>
+    <button onclick="encrypt()">🔒 Encrypt</button>
+    <h3>🔑 Encrypted Key</h3>
+    <pre id="encryptedOutput">Your encrypted key will appear here...</pre>
+    <button onclick="copyKey()">📋 Copy Key</button>
   </div>
 
-  <!-- Decrypt -->
+  <!-- 🔓 Decrypt Tab -->
   <div id="decrypt" class="tab-content">
     <h3>Decrypt Message</h3>
-    <input type="file" id="fileInput" accept=".png"/>
+    <textarea id="decryptKey" placeholder="Paste your encrypted key here..."></textarea><br>
     <button onclick="decrypt()">🔓 Decrypt</button>
-    <h3>Output</h3>
+    <h3>🧾 Decrypted Message</h3>
     <pre id="output">Decrypted message will appear here...</pre>
   </div>
 
   <footer>
     <p>© 2025 DeeStudio. All rights reserved. | Built with ❤️ by DeeStudio</p>
-    <p><a href="#"www.deestudio.it.com</a></p>
+    <p><a href="https://www.deestudio.it.com">www.deestudio.it.com</a></p>
   </footer>
 
   <script>
     // 🌙 Theme Toggle
-    function toggleTheme() { document.body.classList.toggle("light"); }
+    function toggleTheme() {
+      document.body.classList.toggle("light");
+    }
 
     // 📂 Tab Switcher
     function openTab(tabId) {
@@ -186,28 +185,40 @@
       document.getElementById(tabId).classList.add('active');
     }
 
-    // 🔒 Encrypt
+    // 🔒 Encrypt (text → key)
     async function encrypt() {
+      let msg = document.getElementById("message").value.trim();
+      if (!msg) return alert("Please enter a message!");
       let formData = new FormData();
-      formData.append("message", document.getElementById("message").value);
+      formData.append("message", msg);
+
       let res = await fetch("/encrypt", { method: "POST", body: formData });
-      let blob = await res.blob();
-      let url = URL.createObjectURL(blob);
-      let a = document.createElement("a");
-      a.href = url; a.download = "encrypted.png"; a.click();
+      let data = await res.json();
+      if (data.error) return alert(data.error);
+
+      document.getElementById("encryptedOutput").innerText = data.encrypted_key;
     }
 
-    // 🔓 Decrypt
+    // 🔓 Decrypt (key → text)
     async function decrypt() {
-      let file = document.getElementById("fileInput").files[0];
-      if (!file) { alert("Select a PNG file first!"); return; }
+      let key = document.getElementById("decryptKey").value.trim();
+      if (!key) return alert("Please paste an encrypted key!");
       let formData = new FormData();
-      formData.append("file", file);
+      formData.append("key", key);
+
       let res = await fetch("/decrypt", { method: "POST", body: formData });
       let data = await res.json();
-      document.getElementById("output").innerText = "Decrypted: " + data.message;
+
+      if (data.error) document.getElementById("output").innerText = "❌ " + data.error;
+      else document.getElementById("output").innerText = "✅ " + data.message;
+    }
+
+    // 📋 Copy Key
+    function copyKey() {
+      let key = document.getElementById("encryptedOutput").innerText;
+      navigator.clipboard.writeText(key);
+      alert("Encrypted key copied to clipboard!");
     }
   </script>
 </body>
 </html>
-
